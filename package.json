@@ -2,14 +2,21 @@
   "name": "rest_api",
   "version": "1.0.0",
   "description": "A simple restful crud api for `item`",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha"
   },
   "author": "Rėjus Paukštė",
   "repository": {
     "type": "git",
     "url": "https://github.com/raywiis/rest_api.git"
   },
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.16.4",
+    "node-fetch": "^2.3.0"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
 }
