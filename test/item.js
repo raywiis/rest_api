@@ -3,8 +3,8 @@ const fetch = require('node-fetch')
 let server
 
 describe('Item', () => {
-    before(() => {
-        server = require('../server')
+    before(async () => {
+        server = await require('../server')
     })
 
     it('Gets a list of items', async () => {
