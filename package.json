@@ -20,6 +20,7 @@
     "sqlite3": "^4.0.6"
   },
   "devDependencies": {
+    "form-urlencoded": "^3.0.0",
     "mocha": "^5.2.0"
   }
 }
