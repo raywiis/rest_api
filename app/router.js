@@ -18,8 +18,13 @@ router.post('/api/item', async (req, res) => {
     }
 })
 
-router.get('/api/item', (req, res) => {
-    res.send({'message': 'response is ok'})
+router.get('/api/item', async (req, res) => {
+    try {
+        const items = await models.Item.findAll()
+        res.send({ items })
+    } catch (err) {
+        res.send({ err })
+    }
 })
 
 module.exports = (async () => {
