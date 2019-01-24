@@ -7,11 +7,31 @@ const database = new Sequelize({
 })
 
 const Item = database.define('Item', {
-    title: Sequelize.STRING,
-    description: Sequelize.TEXT,
-    price: Sequelize.INTEGER,
-    stock: Sequelize.INTEGER,
-    location: Sequelize.TEXT
+    title: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    description: {
+        type: Sequelize.TEXT
+    },
+    price: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            isNumeric: true
+        }
+    },
+    stock: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        validate: {
+            isInt: true
+        }
+    },
+    location: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    }
 })
 
 database.sync({ force: true })
