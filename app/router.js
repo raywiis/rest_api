@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const Op = require('sequelize').Op
 let models = null
 
 /**
@@ -40,7 +41,7 @@ router.use('/api/item/:item_id', async (req, res, next) => {
         })
 
         if (items.length <= 0) {
-            throw `No item with id ${req.params.id}`
+            throw `No item with id ${req.params.item_id}`
         }
 
         req.item = items[0]
