@@ -1,7 +1,8 @@
 const Sequelize = require('sequelize')
 
 const database = new Sequelize({
-    dialect: 'sqlite'
+    dialect: 'sqlite',
+    logging: false
 })
 
 const Item = database.define('Item', {
