@@ -1,7 +1,9 @@
 const express = require('express')
+const bodyParser = require('body-parser')
 
 const PORT = 8080
 const app = express()
+app.use(bodyParser.urlencoded())
 
 module.exports = (async () => {
     const router = await require('./app/router')

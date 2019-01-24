@@ -5,11 +5,11 @@ const database = new Sequelize({
 })
 
 const Item = database.define('Item', {
-    'title': Sequelize.STRING,
-    'desctiption': Sequelize.TEXT,
-    'price': Sequelize.INTEGER,
-    'stock': Sequelize.INTEGER,
-    'location': Sequelize.TEXT
+    title: Sequelize.STRING,
+    description: Sequelize.TEXT,
+    price: Sequelize.INTEGER,
+    stock: Sequelize.INTEGER,
+    location: Sequelize.TEXT
 })
 
 database.sync({ force: true })

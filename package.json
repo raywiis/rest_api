@@ -13,6 +13,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "express": "^4.16.4",
     "node-fetch": "^2.3.0",
     "sequelize": "^4.42.0",
