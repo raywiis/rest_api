@@ -27,6 +27,7 @@ npm test
 - `GET /api/item` will return a list of items
 - `POST /api/item` with required fields will create a new item and return
 the instance data
+- `GET /api/item/:id` retrieves a single item by id
 - `PUT /api/item/:id` will update specified fields on object with id
 - `DELETE /api/item/:id` deletes an item by specified id
 

@@ -1,12 +1,11 @@
 const express = require('express')
 const router = express.Router()
-const Op = require('sequelize').Op
 let models = null
 
 /**
  * Create a new item from post request
  */
-router.post('/api/item', async (req, res) => {
+router.post('/item', async (req, res) => {
     const { title, description, stock, price, location } = req.body
 
     try {
@@ -22,7 +21,7 @@ router.post('/api/item', async (req, res) => {
 /**
  * Get a list of all items
  */
-router.get('/api/item', async (req, res) => {
+router.get('/item', async (req, res) => {
     try {
         const items = await models.Item.findAll()
         res.send({ items })
@@ -34,7 +33,7 @@ router.get('/api/item', async (req, res) => {
 /**
  * Fetch item to use with put and delete routes
  */
-router.use('/api/item/:item_id', async (req, res, next) => {
+router.use('/item/:item_id', async (req, res, next) => {
     try {
         const items = await models.Item.findAll({
             where: { id: req.params.item_id }
@@ -52,9 +51,16 @@ router.use('/api/item/:item_id', async (req, res, next) => {
 })
 
 /**
+ * Retrieve a single item by id
+ */
+router.get('/item/:item_id', (req, res) => {
+    res.send({ item: req.item })
+})
+
+/**
  * Update an item by id
  */
-router.put('/api/item/:item_id', async (req, res) => {
+router.put('/item/:item_id', async (req, res) => {
     const { title, description, stock, price, location } = req.body
     const item = req.item
 
@@ -75,7 +81,7 @@ router.put('/api/item/:item_id', async (req, res) => {
 /**
  * Delete item specified by id
  */
-router.delete('/api/item/:item_id', async (req, res) => {
+router.delete('/item/:item_id', async (req, res) => {
     const item = req.item
 
     try {
