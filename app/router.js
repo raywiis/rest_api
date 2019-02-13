@@ -3,20 +3,27 @@ const router = express.Router()
 let models = null
 
 /**
+ * Handle promise rejects for express
+ */
+const asyncMiddleware = (fn) => {
+    return (req, res, next) => {
+        Promise.resolve(fn(req, res, next))
+            .catch(next)
+    }
+}
+
+/**
  * Create a new item from post request
  */
-router.post('/item', async (req, res) => {
+router.post('/item', asyncMiddleware(async (req, res) => {
     const { title, description, stock, price, location } = req.body
 
-    try {
-        const item = await models.Item.create({
-            title, description, price, stock, location
-        })
-        res.send({ item })
-    } catch (err) {
-        res.send({ err })
-    }
-})
+    const item = await models.Item.create({
+        title, description, price, stock, location
+    })
+
+    res.send({ item })
+}))
 
 /**
  * Get a list of all items
@@ -90,6 +97,17 @@ router.delete('/item/:item_id', async (req, res) => {
     } catch (err) {
         res.send({ err })
     }
+})
+
+/** 
+ * Custom generic error handler
+ */
+router.use((err, req, res, next) => {
+    if (res.headersSent) {
+        return next(err)
+    }
+    res.send({ err })
+    next(err)
 })
 
 module.exports = (async () => {
