@@ -28,14 +28,10 @@ router.post('/item', asyncMiddleware(async (req, res) => {
 /**
  * Get a list of all items
  */
-router.get('/item', async (req, res) => {
-    try {
-        const items = await models.Item.findAll()
-        res.send({ items })
-    } catch (err) {
-        res.send({ err })
-    }
-})
+router.get('/item', asyncMiddleware(async (req, res) => {
+    const items = await models.Item.findAll()
+    res.send({ items })
+}))
 
 /**
  * Fetch item to use with put and delete routes
