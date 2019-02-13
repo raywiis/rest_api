@@ -59,7 +59,7 @@ router.get('/item/:item_id', (req, res) => {
 /**
  * Update an item by id
  */
-router.put('/item/:item_id', async (req, res) => {
+router.put('/item/:item_id', asyncMiddleware(async (req, res) => {
     const { title, description, stock, price, location } = req.body
     const item = req.item
 
@@ -69,13 +69,9 @@ router.put('/item/:item_id', async (req, res) => {
     item.price = price || item.price
     item.location = location || item.location
 
-    try {
-        await item.save()
-        res.send({ item })
-    } catch (err) {
-        res.send({ err })
-    }
-})
+    await item.save()
+    res.send({ item })
+}))
 
 /**
  * Delete item specified by id
