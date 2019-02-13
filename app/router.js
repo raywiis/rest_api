@@ -36,22 +36,18 @@ router.get('/item', asyncMiddleware(async (req, res) => {
 /**
  * Fetch item to use with put and delete routes
  */
-router.use('/item/:item_id', async (req, res, next) => {
-    try {
-        const items = await models.Item.findAll({
-            where: { id: req.params.item_id }
-        })
+router.use('/item/:item_id', asyncMiddleware(async (req, res, next) => {
+    const items = await models.Item.findAll({
+        where: { id: req.params.item_id }
+    })
 
-        if (items.length <= 0) {
-            throw `No item with id ${req.params.item_id}`
-        }
-
-        req.item = items[0]
-        next()
-    } catch(err) {
-        res.send({ err })
+    if (items.length <= 0) {
+        throw `No item with id ${req.params.item_id}`
     }
-})
+
+    req.item = items[0]
+    next()
+}))
 
 /**
  * Retrieve a single item by id
