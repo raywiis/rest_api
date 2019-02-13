@@ -76,16 +76,12 @@ router.put('/item/:item_id', asyncMiddleware(async (req, res) => {
 /**
  * Delete item specified by id
  */
-router.delete('/item/:item_id', async (req, res) => {
+router.delete('/item/:item_id', asyncMiddleware(async (req, res) => {
     const item = req.item
 
-    try {
-        await item.destroy()
-        res.send({ item })
-    } catch (err) {
-        res.send({ err })
-    }
-})
+    await item.destroy()
+    res.send({ item })
+}))
 
 /** 
  * Custom generic error handler
