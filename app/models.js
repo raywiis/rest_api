@@ -4,7 +4,6 @@ const validator = require('validator')
 const database = new Sequelize({
     dialect: 'sqlite',
     logging: false,
-    operatorsAliases: false
 })
 
 const Item = database.define('Item', {
