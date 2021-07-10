@@ -1,12 +1,13 @@
 const assert = require('assert')
 const fetch = require('node-fetch')
-const  formUrlEncoded = require('form-urlencoded').default
+const formUrlEncoded = require('form-urlencoded').default
 let server
 
 const baseUrl = 'http://localhost:8080/api'
 
 describe('Item', () => {
-    before(async () => {
+    before(async function () {
+        this.timeout(5000)
         server = await require('../server')
     })
 
