@@ -7,19 +7,16 @@ module.exports = (async () => {
     const models = await require('./app/models')
 
     const spec = stack([parseBody], paths({
-        '/item/:itemId': methods({
-            GET: async (ctx) => {
-                const { itemId } = ctx[Routing].path.params
-                const item = await fetchItem(itemId, models.Item)
-                return JSON.stringify({ item })
-            },
+        '/item/:itemId': stack([
+            withItem(models.Item, (ctx) => ctx[Routing].path.params.itemId)
+        ], methods({
+            GET: (ctx) => JSON.stringify({ item: ctx.item }),
             PUT: async (ctx) => {
                 const {
                     title, description, stock, price, location
                 } = parseUrlEncode(ctx.body);
 
-                const { itemId } = ctx[Routing].path.params
-                const item = await fetchItem(itemId, models.Item)
+                const { item } = ctx
 
                 item.title = title || item.title
                 item.description = description || item.description
@@ -32,14 +29,11 @@ module.exports = (async () => {
                 return JSON.stringify({ item })
             },
             DELETE: async (ctx) => {
-                const { itemId } = ctx[Routing].path.params
-                const item = await fetchItem(itemId, models.Item)
-
+                const item = { ctx }
                 await item.destroy()
-
                 return JSON.stringify({ item })
             }
-        }),
+        })),
         '/item': methods({
             GET: async () => JSON.stringify({
                 items: await models.Item.findAll()
@@ -96,9 +90,12 @@ function parseUrlEncode(string) {
         }, {})
 }
 
-async function fetchItem(id, Item) {
-    const item = await Item.findAll({
-        where: { id }
-    })
-    return item[0]
+function withItem(Item, idSelector) {
+    return (wrap) => async (ctx, req) => {
+        const id = idSelector(ctx, req);
+        const items = await Item.findAll({
+            where: { id }
+        })
+        return wrap({ ...ctx, item: items[0] }, req)
+    }
 }
