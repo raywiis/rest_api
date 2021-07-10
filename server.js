@@ -1,5 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const { makeHandler } = require('fernie');
+
+console.log(makeHandler)
 
 const PORT = 8080
 const app = express()
