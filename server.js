@@ -3,12 +3,10 @@ const { makeHandler, paths, stack, Routing, methods } = require('fernie');
 
 const PORT = 8080
 
-module.exports = (async () => {
-    const models = await require('./app/models')
-
-    const spec = stack([parseBody], paths({
+function makeRoutes(ItemModel) {
+    return stack([parseBody], paths({
         '/item/:itemId': stack([
-            withItem(models.Item, (ctx) => ctx[Routing].path.params.itemId)
+            withItem(ItemModel, (ctx) => ctx[Routing].path.params.itemId)
         ], methods({
             GET: (ctx) => JSON.stringify({ item: ctx.item }),
             PUT: async (ctx) => {
@@ -36,14 +34,14 @@ module.exports = (async () => {
         })),
         '/item': methods({
             GET: async () => JSON.stringify({
-                items: await models.Item.findAll()
+                items: await ItemModel.findAll()
             }),
             POST: async ({ body }) => {
                 const {
                     title, description, stock, price, location
                 } = parseUrlEncode(body);
 
-                const item = await models.Item.create({
+                const item = await ItemModel.create({
                     title, description, price, stock, location
                 })
 
@@ -51,10 +49,16 @@ module.exports = (async () => {
             },
         })
     }))
+}
 
-    const server = http.createServer(makeHandler(paths({
-        '/api': spec
-    })))
+module.exports = (async () => {
+    const models = await require('./app/models')
+
+    const spec = paths({
+        '/api': makeRoutes(models.Item)
+    })
+
+    const server = http.createServer(makeHandler(spec))
 
     server.listen(PORT, () => {
         console.log(`Server listening on port ${PORT}`)
