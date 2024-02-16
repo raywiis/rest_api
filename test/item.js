@@ -1,5 +1,4 @@
 const assert = require('assert')
-const fetch = require('node-fetch')
 const  formUrlEncoded = require('form-urlencoded').default
 let server
 
