@@ -21,6 +21,6 @@
   },
   "devDependencies": {
     "form-urlencoded": "^3.0.1",
-    "mocha": "^10.1.0"
+    "mocha": "^10.8.2"
   }
 }
